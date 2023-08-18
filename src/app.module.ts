@@ -23,7 +23,7 @@ import { JoinValidationSchema } from './config/joi.validation';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       autoLoadEntities: true,
-      synchronize: true,
+      synchronize: true, //! solo en dev en pro
     }),
   ],
 })
