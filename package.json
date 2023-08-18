@@ -2,9 +2,9 @@
   "name": "teslo-shop",
   "version": "0.0.1",
   "description": "",
-  "author": "",
+  "author": "Miguel Angel Pérez Contreras",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "MIT",
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
@@ -65,5 +65,8 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
+  },
+  "engines": {
+    "node": "18.16.0"
   }
 }
