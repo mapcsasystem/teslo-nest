@@ -6,6 +6,7 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
   Index,
+  BeforeInsert,
 } from 'typeorm';
 @Entity()
 export class Product {
@@ -26,6 +27,7 @@ export class Product {
   description: string;
 
   @Column({ type: 'text', nullable: false, unique: true })
+  @Index()
   slug?: string;
 
   @Column('int', { nullable: false, default: 0 })
@@ -40,11 +42,26 @@ export class Product {
   // TODO:  create tags, images
 
   @CreateDateColumn()
+  @Index()
   createdAt: Date;
 
   @UpdateDateColumn()
+  @Index()
   updatedAt: Date;
 
   @DeleteDateColumn()
+  @Index()
   deletedAt: Date;
+
+  @BeforeInsert()
+  updateSlogInsert() {
+    if (!this.slug) {
+      this.slug = this.title;
+    }
+    this.slug = `/${this.slug}`
+      .toLowerCase()
+      .replaceAll(' ', '_')
+      .replaceAll("'", '');
+  }
+  // TODO: @BeforeUpdate
 }

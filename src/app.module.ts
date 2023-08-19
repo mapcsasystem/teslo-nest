@@ -2,10 +2,11 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
-import { envConfiguration } from './config/app.config';
+import { envConfiguration } from './common/config/app.config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { JoinValidationSchema } from './config/joi.validation';
+import { JoinValidationSchema } from './common/config/joi.validation';
 import { ProductsModule } from './products/products.module';
+import { CommonModule } from './common/common.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { ProductsModule } from './products/products.module';
       synchronize: true, //! solo en dev en pro
     }),
     ProductsModule,
+    CommonModule,
   ],
 })
 export class AppModule {}

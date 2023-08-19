@@ -10,7 +10,7 @@ import {
 } from 'class-validator';
 import { Transform } from 'class-transformer';
 export class CreateProductDto {
-  @Transform(({ value }) => value.trim())
+  @Transform(({ value }) => value.toLowerCase().trim())
   @IsString()
   @MinLength(1)
   title: string;
@@ -21,12 +21,12 @@ export class CreateProductDto {
   @IsOptional()
   price?: number;
 
-  @Transform(({ value }) => value.trim())
+  @Transform(({ value }) => value.toLowerCase().trim())
   @IsString()
   @MinLength(1)
   description: string;
 
-  @Transform(({ value }) => value.trim())
+  @Transform(({ value }) => value.toLowerCase().trim())
   @IsString()
   @IsOptional()
   slug?: string;
@@ -40,7 +40,7 @@ export class CreateProductDto {
   @IsArray()
   sizes: string[];
 
-  @Transform(({ value }) => value.trim())
+  @Transform(({ value }) => value.toLowerCase().trim())
   @IsIn(['men', 'women', 'kid', 'unisex'])
   gender: string;
 

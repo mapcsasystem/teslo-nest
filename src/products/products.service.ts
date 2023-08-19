@@ -3,12 +3,14 @@ import {
   Injectable,
   InternalServerErrorException,
   Logger,
+  NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Product } from './entities/product.entity';
+import { v4 as uuid } from 'uuid';
 @Injectable()
 export class ProductsService {
   private readonly logger = new Logger('ProductsService');
@@ -18,8 +20,8 @@ export class ProductsService {
   ) {}
 
   async create(createProductDto: CreateProductDto) {
+    const product = this.productRepository.create(createProductDto);
     try {
-      const product = this.productRepository.create(createProductDto);
       await this.productRepository.save(product);
       return product;
     } catch (error) {
@@ -29,20 +31,39 @@ export class ProductsService {
     }
   }
 
+  // TODO: Paginar
   async findAll() {
-    return `This action returns all products`;
+    try {
+      const products = await this.productRepository.find({});
+      const counts = products.length;
+
+      return { products, counts };
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async findOne(id: string) {
-    return `This action returns a #${id} product`;
+    const product = await this.productRepository.findOneBy({ id });
+    if (!product) {
+      throw new NotFoundException(`Id with "${id} no exist"`);
+    }
+    return product;
   }
+
+  // async findOneTitle(title: string) {
+  //   const product = await this.productRepository.findOneBy({ title });
+  //   return product;
+  // }
 
   async update(id: string, updateProductDto: UpdateProductDto) {
     return `This action updates a #${id} product`;
   }
 
   async remove(id: string) {
-    return `This action removes a #${id} product`;
+    const product = await this.findOne(id);
+    await this.productRepository.remove(product);
+    return { id };
   }
 
   private handleDBExeption(error: any) {
