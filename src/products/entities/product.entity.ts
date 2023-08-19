@@ -5,6 +5,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
+  Index,
 } from 'typeorm';
 @Entity()
 export class Product {
@@ -15,9 +16,10 @@ export class Product {
     unique: true,
     nullable: false,
   })
+  @Index()
   title: string;
 
-  @Column('numeric', { nullable: false, default: 0 })
+  @Column('float', { nullable: false, default: 0 })
   price?: number;
 
   @Column({ type: 'text', nullable: false })

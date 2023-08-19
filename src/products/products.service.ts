@@ -1,4 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -6,28 +11,48 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { Product } from './entities/product.entity';
 @Injectable()
 export class ProductsService {
+  private readonly logger = new Logger('ProductsService');
   constructor(
     @InjectRepository(Product)
-    private readonly productReposytory: Repository<Product>,
+    private readonly productRepository: Repository<Product>,
   ) {}
 
   async create(createProductDto: CreateProductDto) {
-    return 'This action adds a new product';
+    try {
+      const product = this.productRepository.create(createProductDto);
+      await this.productRepository.save(product);
+      return product;
+    } catch (error) {
+      console.log(error);
+
+      this.handleDBExeption(error);
+    }
   }
 
   async findAll() {
     return `This action returns all products`;
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     return `This action returns a #${id} product`;
   }
 
-  async update(id: number, updateProductDto: UpdateProductDto) {
+  async update(id: string, updateProductDto: UpdateProductDto) {
     return `This action updates a #${id} product`;
   }
 
-  async emove(id: number) {
+  async remove(id: string) {
     return `This action removes a #${id} product`;
+  }
+
+  private handleDBExeption(error: any) {
+    if (error.code === '23505') {
+      throw new BadRequestException(error.detail);
+    }
+    if (error.code === '23502') {
+      throw new BadRequestException(`${error.column} violates not-null.`);
+    }
+    this.logger.error(error);
+    throw new InternalServerErrorException('Create Product cheque de error');
   }
 }
