@@ -4,7 +4,7 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
-  DeleteDateColumn,
+  // DeleteDateColumn,
   Index,
   BeforeInsert,
 } from 'typeorm';
@@ -49,16 +49,16 @@ export class Product {
   @Index()
   updatedAt: Date;
 
-  @DeleteDateColumn()
-  @Index()
-  deletedAt: Date;
+  // @DeleteDateColumn()
+  // @Index()
+  // deletedAt: Date;
 
   @BeforeInsert()
   updateSlogInsert() {
     if (!this.slug) {
       this.slug = this.title;
     }
-    this.slug = `/${this.slug}`
+    this.slug = `${this.slug}`
       .toLowerCase()
       .replaceAll(' ', '_')
       .replaceAll("'", '');

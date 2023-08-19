@@ -10,7 +10,7 @@ import {
 } from 'class-validator';
 import { Transform } from 'class-transformer';
 export class CreateProductDto {
-  @Transform(({ value }) => value.toLowerCase().trim())
+  @Transform(({ value }) => value.trim())
   @IsString()
   @MinLength(1)
   title: string;
