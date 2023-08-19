@@ -11,6 +11,7 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Product } from './entities/product.entity';
 import { v4 as uuid } from 'uuid';
+import { PaginationDto } from 'src/common/dtos/pagination.dto';
 @Injectable()
 export class ProductsService {
   private readonly logger = new Logger('ProductsService');
@@ -31,10 +32,14 @@ export class ProductsService {
     }
   }
 
-  // TODO: Paginar
-  async findAll() {
+  async findAll(paginationDto: PaginationDto) {
     try {
-      const products = await this.productRepository.find({});
+      const { limit = 10, offset = 0 } = paginationDto;
+      const products = await this.productRepository.find({
+        take: limit,
+        skip: offset,
+        // TODO: Relaciones
+      });
       const counts = products.length;
 
       return { products, counts };
