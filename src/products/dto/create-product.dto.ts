@@ -40,6 +40,11 @@ export class CreateProductDto {
   @IsArray()
   sizes: string[];
 
+  @IsString({ each: true })
+  @IsArray()
+  @IsOptional()
+  tags: string[];
+
   @Transform(({ value }) => value.toLowerCase().trim())
   @IsIn(['men', 'women', 'kid', 'unisex'])
   gender: string;

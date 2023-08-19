@@ -40,6 +40,9 @@ export class Product {
   @Column('text', { nullable: false })
   gender: string;
 
+  @Column('text', { array: true, nullable: false, default: [] })
+  tags: string[];
+
   // TODO:  create tags, images
 
   @CreateDateColumn()
