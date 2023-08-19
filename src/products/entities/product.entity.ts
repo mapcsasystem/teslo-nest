@@ -7,6 +7,7 @@ import {
   // DeleteDateColumn,
   Index,
   BeforeInsert,
+  BeforeUpdate,
 } from 'typeorm';
 @Entity()
 export class Product {
@@ -54,14 +55,20 @@ export class Product {
   // deletedAt: Date;
 
   @BeforeInsert()
-  updateSlogInsert() {
+  updateSlugInsert() {
     if (!this.slug) {
       this.slug = this.title;
     }
-    this.slug = `${this.slug}`
+    this.slug = this.slug
       .toLowerCase()
       .replaceAll(' ', '_')
       .replaceAll("'", '');
   }
-  // TODO: @BeforeUpdate
+  @BeforeUpdate()
+  updateSlugUpdate() {
+    this.slug = this.slug
+      .toLowerCase()
+      .replaceAll(' ', '_')
+      .replaceAll("'", '');
+  }
 }

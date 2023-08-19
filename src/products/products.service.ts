@@ -26,8 +26,6 @@ export class ProductsService {
       await this.productRepository.save(product);
       return product;
     } catch (error) {
-      console.log(error);
-
       this.handleDBExeption(error);
     }
   }
@@ -69,14 +67,19 @@ export class ProductsService {
   }
 
   async update(id: string, updateProductDto: UpdateProductDto) {
-    const product: Product = await this.productRepository.preload({
-      id,
-      ...updateProductDto,
-    });
-    if (!product) {
-      throw new NotFoundException(`Product with id #${id} no exist"`);
+    try {
+      const product: Product = await this.productRepository.preload({
+        id,
+        ...updateProductDto,
+      });
+      if (!product) {
+        throw new NotFoundException(`Product with id #${id} no exist"`);
+      }
+      await this.productRepository.save(product);
+      return product;
+    } catch (error) {
+      this.handleDBExeption(error);
     }
-    return await this.productRepository.save(product);
   }
 
   async remove(id: string) {
@@ -86,6 +89,8 @@ export class ProductsService {
   }
 
   private handleDBExeption(error: any) {
+    console.log(error);
+
     if (error.code === '23505') {
       throw new BadRequestException(error.detail);
     }
