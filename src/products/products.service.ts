@@ -8,7 +8,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, SelectQueryBuilder } from 'typeorm';
 import { CreateProductDto, UpdateProductDto } from './dto';
-import { Product } from './entities';
+import { Product, ProductImage } from './entities';
 import { validate as isUUID } from 'uuid';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
 @Injectable()
@@ -17,10 +17,18 @@ export class ProductsService {
   constructor(
     @InjectRepository(Product)
     private readonly productRepository: Repository<Product>,
+    @InjectRepository(ProductImage)
+    private readonly productImageRepository: Repository<ProductImage>,
   ) {}
 
   async create(createProductDto: CreateProductDto) {
-    const product = this.productRepository.create(createProductDto);
+    const { images = [], ...productProperties } = createProductDto;
+    const product = this.productRepository.create({
+      ...productProperties,
+      images: images.map((img) =>
+        this.productImageRepository.create({ url: img }),
+      ),
+    });
     try {
       await this.productRepository.save(product);
       return product;
@@ -70,6 +78,7 @@ export class ProductsService {
       const product: Product = await this.productRepository.preload({
         id,
         ...updateProductDto,
+        images: [],
       });
       if (!product) {
         throw new NotFoundException(`Product with id #${id} no exist"`);

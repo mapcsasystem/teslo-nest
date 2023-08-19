@@ -1,13 +1,13 @@
 import {
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  UpdateDateColumn,
+  Entity,
   Index,
-  // BeforeInsert,
-  // BeforeUpdate,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
+import { Product } from './';
 @Entity()
 export class ProductImage {
   @PrimaryGeneratedColumn()
@@ -16,6 +16,9 @@ export class ProductImage {
   @Column('text', { nullable: false })
   @Index()
   url: string;
+
+  @ManyToOne(() => Product, (produc) => produc.images)
+  product: Product;
 
   @CreateDateColumn()
   createdAt: Date;

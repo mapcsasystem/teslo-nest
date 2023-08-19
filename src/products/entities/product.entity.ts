@@ -1,14 +1,16 @@
 import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  CreateDateColumn,
-  UpdateDateColumn,
   // DeleteDateColumn,
-  Index,
   BeforeInsert,
   BeforeUpdate,
+  Column,
+  CreateDateColumn,
+  Entity,
+  Index,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
+import { ProductImage } from './';
 @Entity()
 export class Product {
   @PrimaryGeneratedColumn('uuid')
@@ -43,7 +45,10 @@ export class Product {
   @Column('text', { array: true, nullable: false, default: [] })
   tags: string[];
 
-  // TODO:  create tags, images
+  @OneToMany(() => ProductImage, (producImage) => producImage.product, {
+    cascade: true,
+  })
+  images?: ProductImage[];
 
   @CreateDateColumn()
   @Index()
