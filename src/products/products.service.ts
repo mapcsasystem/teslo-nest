@@ -59,27 +59,6 @@ export class ProductsService {
     }
   }
 
-  private async findOne(term: string) {
-    let product: Product;
-    if (isUUID(term)) {
-      product = await this.productRepository.findOneBy({ id: term });
-    } else {
-      const queryBuilder: SelectQueryBuilder<Product> =
-        this.productRepository.createQueryBuilder('prod');
-      product = await queryBuilder
-        .where(`UPPER(title) =:title or slug=:slug`, {
-          title: term.toUpperCase(),
-          slug: term,
-        })
-        .leftJoinAndSelect('prod.images', 'prodImages')
-        .getOne();
-    }
-    if (!product) {
-      throw new NotFoundException(`Product with search #${term} no exist"`);
-    }
-    return product;
-  }
-
   async findOnePlain(term: string) {
     const { images = [], ...rest } = await this.findOne(term);
     return {
@@ -122,5 +101,26 @@ export class ProductsService {
     }
     this.logger.error(error);
     throw new InternalServerErrorException('Create Product cheque de error');
+  }
+
+  private async findOne(term: string) {
+    let product: Product;
+    if (isUUID(term)) {
+      product = await this.productRepository.findOneBy({ id: term });
+    } else {
+      const queryBuilder: SelectQueryBuilder<Product> =
+        this.productRepository.createQueryBuilder('prod');
+      product = await queryBuilder
+        .where(`UPPER(title) =:title or slug=:slug`, {
+          title: term.toUpperCase(),
+          slug: term,
+        })
+        .leftJoinAndSelect('prod.images', 'prodImages')
+        .getOne();
+    }
+    if (!product) {
+      throw new NotFoundException(`Product with search #${term} no exist"`);
+    }
+    return product;
   }
 }
