@@ -63,18 +63,20 @@ export class ProductsService {
         .getOne();
     }
     if (!product) {
-      throw new NotFoundException(`Product with search "${term} no exist"`);
+      throw new NotFoundException(`Product with search #${term} no exist"`);
     }
     return product;
   }
 
-  // async findOneTitle(title: string) {
-  //   const product = await this.productRepository.findOneBy({ title });
-  //   return product;
-  // }
-
   async update(id: string, updateProductDto: UpdateProductDto) {
-    return `This action updates a #${id} product`;
+    const product: Product = await this.productRepository.preload({
+      id,
+      ...updateProductDto,
+    });
+    if (!product) {
+      throw new NotFoundException(`Product with id #${id} no exist"`);
+    }
+    return await this.productRepository.save(product);
   }
 
   async remove(id: string) {
@@ -88,7 +90,7 @@ export class ProductsService {
       throw new BadRequestException(error.detail);
     }
     if (error.code === '23502') {
-      throw new BadRequestException(`${error.column} violates not-null.`);
+      throw new BadRequestException(`#${error.column} violates not-null.`);
     }
     this.logger.error(error);
     throw new InternalServerErrorException('Create Product cheque de error');
