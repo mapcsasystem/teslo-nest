@@ -31,7 +31,7 @@ export class ProductsService {
     });
     try {
       await this.productRepository.save(product);
-      return product;
+      return { ...product, images };
     } catch (error) {
       this.handleDBExeption(error);
     }
