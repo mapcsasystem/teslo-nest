@@ -59,24 +59,33 @@ export class ProductsService {
     }
   }
 
-  async findOne(term: string) {
+  private async findOne(term: string) {
     let product: Product;
     if (isUUID(term)) {
       product = await this.productRepository.findOneBy({ id: term });
     } else {
       const queryBuilder: SelectQueryBuilder<Product> =
-        this.productRepository.createQueryBuilder();
+        this.productRepository.createQueryBuilder('prod');
       product = await queryBuilder
         .where(`UPPER(title) =:title or slug=:slug`, {
           title: term.toUpperCase(),
           slug: term,
         })
+        .leftJoinAndSelect('prod.images', 'prodImages')
         .getOne();
     }
     if (!product) {
       throw new NotFoundException(`Product with search #${term} no exist"`);
     }
     return product;
+  }
+
+  async findOnePlain(term: string) {
+    const { images = [], ...rest } = await this.findOne(term);
+    return {
+      ...rest,
+      images: images.map((img) => img.url),
+    };
   }
 
   async update(id: string, updateProductDto: UpdateProductDto) {

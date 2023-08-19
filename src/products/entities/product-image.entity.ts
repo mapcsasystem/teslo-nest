@@ -17,7 +17,9 @@ export class ProductImage {
   @Index()
   url: string;
 
-  @ManyToOne(() => Product, (produc) => produc.images)
+  @ManyToOne(() => Product, (produc) => produc.images, {
+    // eager: true,
+  })
   product: Product;
 
   @CreateDateColumn()
