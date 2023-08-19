@@ -15,6 +15,7 @@ export class CreateProductDto {
   @MinLength(1)
   title: string;
 
+  @Transform(({ value }) => value.trim())
   @IsNumber()
   @IsPositive()
   @IsOptional()
@@ -27,15 +28,16 @@ export class CreateProductDto {
 
   @Transform(({ value }) => value.trim())
   @IsString()
-  @IsPositive()
   @IsOptional()
   slug?: string;
 
+  @Transform(({ value }) => value.trim())
   @IsInt()
   @IsPositive()
   @IsOptional()
   stock?: number;
 
+  @Transform(({ value }) => value.trim())
   @IsString({ each: true })
   @IsArray()
   sizes: string[];
