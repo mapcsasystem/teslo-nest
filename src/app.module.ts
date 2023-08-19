@@ -5,6 +5,7 @@ import { join } from 'path';
 import { envConfiguration } from './config/app.config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JoinValidationSchema } from './config/joi.validation';
+import { ProductsModule } from './products/products.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { JoinValidationSchema } from './config/joi.validation';
       autoLoadEntities: true,
       synchronize: true, //! solo en dev en pro
     }),
+    ProductsModule,
   ],
 })
 export class AppModule {}
