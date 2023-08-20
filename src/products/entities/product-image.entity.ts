@@ -19,6 +19,7 @@ export class ProductImage {
 
   @ManyToOne(() => Product, (produc) => produc.images, {
     // eager: true,
+    onDelete: 'CASCADE',
   })
   product: Product;
 
