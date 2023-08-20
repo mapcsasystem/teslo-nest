@@ -1,6 +1,6 @@
 import * as Joi from 'joi';
 
-export const JoinValidationSchema = Joi.object({
+export const JoiValidationSchema = Joi.object({
   POSTGRES_USER: Joi.required(),
   POSTGRES_PASSWORD: Joi.required(),
   POSTGRES_DB: Joi.required(),
