@@ -8,4 +8,6 @@ export const JoinValidationSchema = Joi.object({
   DB_PORT: Joi.required(),
   // DB_SYNCHRONIZE: Joi.required().default(true),
   PORT: Joi.number().default(3000),
+  API_KEY_CLOUDINARY: Joi.number().required(),
+  API_SECRET_CLOUDINARY: Joi.number(),
 });
