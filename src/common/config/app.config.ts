@@ -7,6 +7,7 @@ export const envConfiguration = () => ({
   // DB_SYNCHRONIZE: process.env.DB_SYNCHRONIZE,
   DB_HOST: process.env.DB_HOST,
   DB_PORT: +process.env.DB_PORT,
+  CLOUD_NAME_CLOUDINARY: process.env.CLOUD_NAME_CLOUDINARY,
   API_KEY_CLOUDINARY: +process.env.API_KEY_CLOUDINARY,
   API_SECRET_CLOUDINARY: process.env.API_SECRET_CLOUDINARY,
 });
