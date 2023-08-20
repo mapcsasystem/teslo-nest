@@ -4,6 +4,7 @@ import {
   Body,
   UseInterceptors,
   UploadedFile,
+  ParseFilePipe,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CloudinaryService } from './cloudinary.service';
@@ -16,7 +17,7 @@ export class CloudinaryController {
   @UseInterceptors(FileInterceptor('file'))
   async create(
     @Body() createCloudinaryDto: CreateCloudinaryDto,
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFile('file', ParseFilePipe) file: Express.Multer.File,
   ) {
     // const result = await this.uploadsService.uploadFile(file);
     return this.cloudinaryService.create(createCloudinaryDto, file);
