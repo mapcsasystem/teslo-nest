@@ -1,5 +1,5 @@
 import { Transform } from 'class-transformer';
-import { IsString, MinLength } from 'class-validator';
+import { IsString } from 'class-validator';
 
 export class CreateCloudinaryDto {
   @Transform(({ value }) => value.trim())
