@@ -26,7 +26,8 @@ import { SeedModule } from './seed/seed.module';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       autoLoadEntities: true,
-      synchronize: true, //! solo en dev en pro
+      retryDelay: 3000,
+      synchronize: true, //! solo en dev en dev
     }),
     ProductsModule,
     CommonModule,

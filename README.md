@@ -30,6 +30,12 @@ sudo npm i -g @nestjs/cli
 docker compose up -d
 ```
 
+7. Ejecutar SEED
+
+```
+http://localhost:3000/api/v2/seed
+```
+
 8. Levantar app en la raíz del proyecto
 
 ```

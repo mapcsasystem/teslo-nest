@@ -8,7 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Product } from './';
-@Entity()
+@Entity({ name: 'product_images' })
 export class ProductImage {
   @PrimaryGeneratedColumn()
   id: string;

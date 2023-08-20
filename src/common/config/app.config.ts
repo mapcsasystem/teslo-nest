@@ -6,5 +6,5 @@ export const envConfiguration = () => ({
   POSTGRES_DB: process.env.POSTGRES_DB,
   // DB_SYNCHRONIZE: process.env.DB_SYNCHRONIZE,
   DB_HOST: process.env.DB_HOST,
-  DB_PORT: process.env.DB_PORT,
+  DB_PORT: +process.env.DB_PORT,
 });
