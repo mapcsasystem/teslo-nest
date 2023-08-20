@@ -11,5 +11,6 @@ export class SeedService {
 
   private async insertNewProducts() {
     await this.productsService.deleteAllProducts();
+    return true;
   }
 }
