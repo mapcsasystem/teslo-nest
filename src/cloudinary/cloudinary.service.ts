@@ -38,7 +38,7 @@ export class CloudinaryService {
     }
   }
 
-  async deleteImage(id: string) {
+  async remove(id: string) {
     try {
       const image = await this.cloudinaryRepository.findOneBy({ id });
       if (!image) {
@@ -65,10 +65,6 @@ export class CloudinaryService {
         )
         .end(file.buffer);
     });
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} upload`;
   }
 
   private handleDBExeption(error: any) {

@@ -27,6 +27,6 @@ export class CloudinaryController {
 
   @Delete('delete/:id')
   async deleteImage(@Param('id', ParseUUIDPipe) id: string) {
-    return this.cloudinaryService.deleteImage(id);
+    return this.cloudinaryService.remove(id);
   }
 }
