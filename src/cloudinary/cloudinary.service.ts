@@ -4,30 +4,30 @@ import {
   InternalServerErrorException,
   Logger,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { InjectRepository } from '@nestjs/typeorm';
 
 import { UploadApiErrorResponse, UploadApiResponse, v2 } from 'cloudinary';
-import { CreateCloudinaryDto } from './dto/create-cloudinary.dto';
-import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Cloudinary } from './entities/cloudinary.entity';
-
+import { CreateCloudinaryDto } from './dto';
 @Injectable()
 export class CloudinaryService {
   private readonly logger = new Logger('CloudinaryService');
   constructor(
     @InjectRepository(Cloudinary)
     private readonly cloudinaryRepository: Repository<Cloudinary>,
-  ) {}
-  async create(
-    createCloudinaryDto: CreateCloudinaryDto,
-    file: Express.Multer.File,
+    private readonly configService: ConfigService,
   ) {
-    const result = await this.uploadFile(file);
-    console.log(result);
-
-    const url = this.cloudinaryRepository.create({ url: result.secure_url });
-
+    this.conectCoudinary();
+  }
+  async uploadImage(
+    file: Express.Multer.File,
+    createCloudinaryDto: CreateCloudinaryDto,
+  ) {
     try {
+      const result = await this.uploadFile(file);
+      const url = this.cloudinaryRepository.create({ url: result.secure_url });
       await this.cloudinaryRepository.save(url);
       return { url };
     } catch (error) {
@@ -68,5 +68,13 @@ export class CloudinaryService {
     }
     this.logger.error(error);
     throw new InternalServerErrorException('Create Product cheque de error');
+  }
+
+  private conectCoudinary() {
+    return v2.config({
+      cloud_name: this.configService.get('CLOUD_NAME_CLOUDINARY'),
+      api_key: this.configService.get('API_KEY_CLOUDINARY'),
+      api_secret: this.configService.get('API_SECRET_CLOUDINARY'),
+    });
   }
 }

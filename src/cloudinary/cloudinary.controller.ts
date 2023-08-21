@@ -8,18 +8,17 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CloudinaryService } from './cloudinary.service';
-import { CreateCloudinaryDto } from './dto/create-cloudinary.dto';
+import { CreateCloudinaryDto } from './dto';
 @Controller('files')
 export class CloudinaryController {
   constructor(private readonly cloudinaryService: CloudinaryService) {}
 
   @Post('uploads')
   @UseInterceptors(FileInterceptor('file'))
-  async create(
+  async uploadImage(
     @Body() createCloudinaryDto: CreateCloudinaryDto,
     @UploadedFile('file', ParseFilePipe) file: Express.Multer.File,
   ) {
-    // const result = await this.uploadsService.uploadFile(file);
-    return this.cloudinaryService.create(createCloudinaryDto, file);
+    return this.cloudinaryService.uploadImage(file, createCloudinaryDto);
   }
 }
