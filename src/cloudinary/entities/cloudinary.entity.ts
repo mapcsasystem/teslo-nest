@@ -7,6 +7,7 @@ export class Cloudinary {
   @Column('text', { nullable: false })
   @Index()
   url: string;
+
   @Column('text', { nullable: false })
   public_id: string;
 

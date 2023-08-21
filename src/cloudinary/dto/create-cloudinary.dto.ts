@@ -6,4 +6,9 @@ export class CreateCloudinaryDto {
   @IsString()
   @IsOptional()
   url?: string;
+
+  @Transform(({ value }) => value.trim())
+  @IsString()
+  @IsOptional()
+  public_id?: string;
 }
