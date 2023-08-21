@@ -5,6 +5,9 @@ import {
   UseInterceptors,
   UploadedFile,
   ParseFilePipe,
+  Delete,
+  Param,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CloudinaryService } from './cloudinary.service';
@@ -20,5 +23,10 @@ export class CloudinaryController {
     @UploadedFile('file', ParseFilePipe) file: Express.Multer.File,
   ) {
     return this.cloudinaryService.uploadImage(file, createCloudinaryDto);
+  }
+
+  @Delete('delete/:id')
+  async deleteImage(@Param('id', ParseUUIDPipe) id: string) {
+    return this.cloudinaryService.deleteImage(id);
   }
 }

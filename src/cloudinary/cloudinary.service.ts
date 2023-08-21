@@ -27,12 +27,26 @@ export class CloudinaryService {
   ) {
     try {
       const result = await this.uploadFile(file);
-      const url = this.cloudinaryRepository.create({ url: result.secure_url });
-      await this.cloudinaryRepository.save(url);
-      return { url };
+      const image = this.cloudinaryRepository.create({
+        url: result.secure_url,
+        public_id: result.public_id,
+      });
+      await this.cloudinaryRepository.save(image);
+      return { url: result.secure_url };
     } catch (error) {
       this.handleDBExeption(error);
     }
+  }
+
+  async deleteImage(id: string) {
+    try {
+      const image = await this.cloudinaryRepository.findOneBy({ id });
+      if (!image) {
+        throw new BadRequestException(`Image with id:${id} no exist`);
+      }
+      await this.cloudinaryRepository.remove(image);
+      await v2.uploader.destroy(image.public_id);
+    } catch (error) {}
   }
 
   private async uploadFile(
@@ -42,7 +56,7 @@ export class CloudinaryService {
       v2.uploader
         .upload_stream(
           {
-            resource_type: 'auto',
+            resource_type: 'image',
           },
           (error, result) => {
             if (error) return reject(error);
