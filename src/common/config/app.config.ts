@@ -10,4 +10,5 @@ export const envConfiguration = () => ({
   CLOUD_NAME_CLOUDINARY: process.env.CLOUD_NAME_CLOUDINARY,
   API_KEY_CLOUDINARY: +process.env.API_KEY_CLOUDINARY,
   API_SECRET_CLOUDINARY: process.env.API_SECRET_CLOUDINARY,
+  HOST_API: process.env.HOST_API,
 });
