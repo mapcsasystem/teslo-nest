@@ -13,10 +13,11 @@ export class CreateUserDto {
   @MinLength(1)
   fullName: string;
 
-  @Transform(({ value }) => value.trim())
+  @Transform(({ value }) => value.toLowerCase().trim())
   @IsEmail()
   email: string;
 
+  @Transform(({ value }) => value.trim())
   @IsString()
   @MinLength(6)
   @MaxLength(50)
@@ -34,4 +35,13 @@ export class CreateUserDto {
   //   @IsArray()
   //   @IsIn(['user'])
   //   roles: string[];
+
+  // @BeforeInsert()
+  // checkFileBeforeInsert() {
+  //   this.email=this.email.toLowerCase().trim();
+  // }
+  // @BeforeUpdate()
+  // checkFileBeforeUpdate() {
+  //   this.email=this.email.toLowerCase().trim();
+  // }
 }
