@@ -12,4 +12,6 @@ export const JoiValidationSchema = Joi.object({
   API_KEY_CLOUDINARY: Joi.number().required(),
   API_SECRET_CLOUDINARY: Joi.required(),
   HOST_API: Joi.required(),
+  SECRET_KEY: Joi.required(),
+  APP_KEY: Joi.required(),
 });
