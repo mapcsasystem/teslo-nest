@@ -21,13 +21,13 @@ export class JwtStratery extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: JwtPayload): Promise<User> {
-    const { email, id } = payload;
-    const user = await this.userRepository.findOneBy({ email });
+    const { id } = payload;
+    const user = await this.userRepository.findOneBy({ id });
     if (!user) {
-      throw new UnauthorizedException('Unauthorized');
+      throw new UnauthorizedException('No valid token.');
     }
     if (!user.isActive) {
-      throw new UnauthorizedException('Unauthorized');
+      throw new UnauthorizedException('User is inactive talk with an admin.');
     }
     return user;
   }
