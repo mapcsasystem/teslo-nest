@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import {
   IsEmail,
@@ -8,10 +9,12 @@ import {
 } from 'class-validator';
 
 export class LoginUserDto {
+  @ApiProperty()
   @Transform(({ value }) => value.toLowerCase().trim())
   @IsEmail()
   email: string;
 
+  @ApiProperty()
   @Transform(({ value }) => value.trim())
   @IsString()
   @MinLength(6)
@@ -22,4 +25,3 @@ export class LoginUserDto {
   })
   password: string;
 }
-'sadasd'.toLowerCase;

@@ -13,11 +13,22 @@ import {
 } from 'typeorm';
 import { ProductImage } from './';
 import { User } from '../../auth/entities/user.entity';
+import { ApiProperty } from '@nestjs/swagger';
 @Entity({ name: 'products' })
 export class Product {
+  @ApiProperty({
+    example: 'daff1384-36c6-4642-bb45-cab93a648e87',
+    description: 'Produc id',
+    uniqueItems: true,
+  })
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @ApiProperty({
+    example: 'Shirt',
+    description: 'Produc title',
+    uniqueItems: true,
+  })
   @Column('text', {
     unique: true,
     nullable: false,
@@ -25,28 +36,36 @@ export class Product {
   @Index()
   title: string;
 
+  @ApiProperty()
   @Column('float', { nullable: false, default: 0 })
   price?: number;
 
+  @ApiProperty()
   @Column({ type: 'text', nullable: false })
   description: string;
 
+  @ApiProperty()
   @Column({ type: 'text', nullable: false, unique: true })
   @Index()
   slug?: string;
 
+  @ApiProperty()
   @Column('int', { nullable: false, default: 0 })
   stock: number;
 
+  @ApiProperty()
   @Column('text', { array: true, nullable: false })
   sizes: string[];
 
+  @ApiProperty()
   @Column('text', { nullable: false })
   gender: string;
 
+  @ApiProperty()
   @Column('text', { array: true, nullable: false, default: [] })
   tags: string[];
 
+  @ApiProperty()
   @OneToMany(() => ProductImage, (producImage) => producImage.product, {
     cascade: true,
     eager: true,
@@ -56,10 +75,12 @@ export class Product {
   @ManyToOne(() => User, (user) => user.product, { eager: true })
   user: User;
 
+  @ApiProperty()
   @CreateDateColumn()
   @Index()
   createdAt: Date;
 
+  @ApiProperty()
   @UpdateDateColumn()
   @Index()
   updatedAt: Date;
