@@ -55,7 +55,7 @@ export class ProductsService {
         images: product.images.map((img) => img.url),
       }));
 
-      return { ...product, counts };
+      return [...product, { counts }];
     } catch (error) {
       console.log(error);
     }
