@@ -9,7 +9,12 @@ import {
   IsIn,
 } from 'class-validator';
 import { Transform } from 'class-transformer';
+import { ApiProperty } from '@nestjs/swagger';
 export class CreateProductDto {
+  @ApiProperty({
+    description: 'Product title',
+    uniqueItems: true,
+  })
   @Transform(({ value }) => value.trim())
   @IsString()
   @MinLength(1)
