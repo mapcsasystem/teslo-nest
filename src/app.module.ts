@@ -15,6 +15,7 @@ import { SeedModule } from './seed/seed.module';
 import { envConfiguration } from './common/config/app.config';
 import { JoiValidationSchema } from './common/config/joi.validation';
 import { AuthModule } from './auth/auth.module';
+import { MessagesWsModule } from './messages-ws/messages-ws.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { AuthModule } from './auth/auth.module';
     FilesModule,
     CloudinaryModule,
     AuthModule,
+    MessagesWsModule,
   ],
 })
 export class AppModule {}
