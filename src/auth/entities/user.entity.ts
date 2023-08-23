@@ -1,8 +1,10 @@
+import { Product } from '../../products/entities';
 import {
   Column,
   CreateDateColumn,
   Entity,
   Index,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -26,6 +28,9 @@ export class User {
 
   @Column('text', { array: true, default: ['user'] })
   roles: string[];
+
+  @OneToMany(() => Product, (product) => product.user)
+  product: Product;
 
   @CreateDateColumn()
   @Index()
