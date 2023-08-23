@@ -4,7 +4,6 @@ import {
   Get,
   Headers,
   Post,
-  Req,
   SetMetadata,
   UseGuards,
 } from '@nestjs/common';
@@ -16,6 +15,7 @@ import { RawHeaders, GetUser, RoleProtected } from './decorators';
 import { IncomingHttpHeaders } from 'http';
 import { UserRoleGuard } from './guards/user-role/user-role.guard';
 import { ValidRoles } from './interfaces/valid-roles.interface';
+import { Auth } from './decorators';
 
 @Controller('auth')
 export class AuthController {
@@ -62,6 +62,15 @@ export class AuthController {
   @RoleProtected(ValidRoles.admin)
   @UseGuards(AuthGuard(), UserRoleGuard)
   testJwtPrivate3(@GetUser() user: User) {
+    return {
+      ok: true,
+      user,
+    };
+  }
+
+  @Get('test-private4')
+  @Auth(ValidRoles.admin) //! ValidRoles.admin   se le manda para validar que role nesesita validar
+  testJwtPrivate4(@GetUser() user: User) {
     return {
       ok: true,
       user,
